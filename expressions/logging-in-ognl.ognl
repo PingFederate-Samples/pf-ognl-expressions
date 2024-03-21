@@ -1,0 +1,29 @@
+// OGNL logging
+// Use the logging classes to output messages from OGNL processing
+// Generally used for testing script behaviour and input values
+#log = @org.apache.commons.logging.LogFactory@getLog("com.pingidentity.ognl.logger"),
+
+// log a message
+#log.debug("Your log messages here"),
+
+// log a multiline message
+#log.debug("Send + "\r" + a + "\r" + Multiline + "\r" + "Log" + "\r" + "Entry"),
+
+// log list data
+#listdata = { "john", "jack", "sonny", "paul" },
+#loglist = "List Entries",
+#listdata.{ #item = #this, #loglist = #loglist + "\r" + #item },
+#log.debug(#loglist),
+
+// log json data
+#gson=new com.google.gson.Gson(),
+#jsonParser = new org.json.simple.parser.JSONParser(),
+#jsondata = "{ \"details\" : { \"name\" : \"John\", \"surname\" : \"Smith\" , \"address\" : { \"number\" : \"21\", \"street\" : \"jump\", \"street_type\" : \"street\" } } }",
+#log.debug("Log JSON Data" + "\r" + #jsonParser.parse(#jsondata))
+
+// log request headers (OGNL in issuance criteria)
+#objReq = #this.get("context.HttpRequest").getObjectValue(), 
+#headers = #objReq.getHeaderNames(),
+#reqhdrs = "Request Headers",
+#headers.{ #hdr = #this, #reqhdrs = #reqhdrs + "\r" + #hdr.toString() + " = " + #objReq.getHeader( #hdr.toString() ) },
+#log.debug(#reqhdrs + "\r")
